@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Matcha Menu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Poppins:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ==========================================================================
+            ROOT VARIABLES & BASIC RESET
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary-color: #4a6b42;
+            --primary-dark-color: #354f2e;
+            --secondary-color: #8fa878;
+            --white-color: #fff;
+            --dark-color: #2b3a26;
+            --light-bg-color: #f1f4f0;
+            --card-bg: #ffffff;
+            --discount-color: #e67e22;
+            --border-radius-m: 30px;
+            --border-radius-s: 16px;
+        }
+
+        body {
+            background-color: var(--light-bg-color);
+            color: var(--dark-color);
+        }
+
+        /* ==========================================================================
+            NAVIGATION BAR
+           ========================================================================== */
+        .menu-nav {
+            width: 100%;
+            padding: 18px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s ease;
+        }
+
+        .back-btn:hover {
+            color: var(--primary-dark-color);
+            transform: translateX(-3px);
+        }
+
+        .menu-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .menu-cart {
+            background: var(--primary-color);
+            color: var(--white-color);
+            padding: 10px 20px;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* ==========================================================================
+            HERO TITLE SECTION
+           ========================================================================== */
+        .menu-hero {
+            text-align: center;
+            padding: 60px 20px 40px;
+        }
+
+        .menu-hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 45px;
+            color: var(--primary-dark-color);
+            margin-bottom: 10px;
+        }
+
+        .menu-hero p {
+            color: #556650;
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* ==========================================================================
+            PRODUCT GRID & CARDS
+           ========================================================================== */
+        .matcha-container {
+            max-width: 1200px;
+            margin: 0 auto 80px;
+            padding: 0 4%;
+        }
+
+        .matcha-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .matcha-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius-s);
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .matcha-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(74, 107, 66, 0.15);
+        }
+
+        .image-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            background: #eee;
+            height: 430px;
+            overflow: hidden;
+        }
+
+        .matcha-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+
+        }
+
+        .badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--discount-color);
+            color: white;
+            padding: 4px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card-details {
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-details h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            color: var(--dark-color);
+            margin-bottom: 8px;
+        }
+
+        .card-details p {
+            font-size: 13px;
+            color: #667261;
+            line-height: 1.5;
+            margin-bottom: 18px;
+            flex-grow: 1;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .price-wrapper {
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: flex-start;
+        }
+
+        .old-price {
+            font-size: 13px;
+            color: #a5b0a2;
+            text-decoration: line-through;
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        .matcha-price {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--discount-color);
+            line-height: 1;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-add {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 13px;
+            transition: 0.2s ease;
+        }
+
+        .btn-add:hover {
+            background: var(--primary-dark-color);
+        }
+
+        .btn-remove {
+            background: #e78585;
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s ease;
+        }
+
+        .btn-remove:hover {
+            background: #8b0000;
+        }
+
+
+        /* ==========================================================================
+           OUR PROCESS & STORY
+           ========================================================================== */
+        .story-section {
+            background-color: #ffffff;
+            padding: 80px 4%;
+            border-top: 1px solid #e1e6e0;
+        }
+
+        .story-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .story-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .story-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 38px;
+            color: var(--primary-dark-color);
+            margin-bottom: 12px;
+        }
+
+        .story-header p {
+            color: #667261;
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 15px;
+        }
+
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            text-align: center;
+        }
+
+        .process-step {
+            padding: 20px;
+        }
+
+        .process-icon {
+            width: 80px;
+            height: 80px;
+            background-color: var(--light-bg-color);
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 20px;
+            transition: 0.3s ease;
+        }
+
+        .process-step:hover .process-icon {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            transform: scale(1.1);
+        }
+
+        .process-step h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            color: var(--dark-color);
+            margin-bottom: 10px;
+        }
+
+        .process-step p {
+            font-size: 13px;
+            color: #667261;
+            line-height: 1.6;
+        }
+
+
+        /* ==========================================================================
+            SHIPPING METHODS
+           ========================================================================== */
+        .shipping-section {
+            background-color: var(--light-bg-color);
+            padding: 80px 4%;
+            border-top: 1px solid #e1e6e0;
+        }
+
+        .shipping-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .shipping-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .shipping-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 38px;
+            color: var(--primary-dark-color);
+            margin-bottom: 12px;
+        }
+
+        .shipping-header p {
+            color: #555;
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 15px;
+        }
+
+        .shipping-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .shipping-card {
+            background: var(--card-bg);
+            padding: 40px 30px;
+            border-radius: var(--border-radius-s);
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e8e2d8;
+        }
+
+        .shipping-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(61, 124, 71, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .shipping-icon {
+            font-size: 45px;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+
+        .shipping-card h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            color: var(--dark-color);
+            margin-bottom: 12px;
+        }
+
+        .shipping-card p {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .shipping-time {
+            display: inline-block;
+            background: rgba(61, 124, 71, 0.1);
+            color: var(--primary-color);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+
+
+
+        /* ==========================================================================
+           RESPONSIVE DESIGN
+           ========================================================================== */
+        @media (max-width: 600px) {
+            .menu-nav {
+                padding: 15px 5%;
+            }
+
+            .menu-hero h1 {
+                font-size: 32px;
+            }
+
+            .matcha-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+
+
+        .footer-section {
+            padding: 50px 0;
+            background: rgb(9, 48, 9);
+        }
+
+        .footer-section .section-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+
+        .footer-section :where(.copyright-text, .social-link, .policy-link) {
+            color: var(--white-color);
+            transition: 0.2s ease;
+        }
+
+        .footer-section .social-link-list {
+            display: flex;
+            gap: 25px;
+        }
+
+        .footer-section .social-link-list .social-link {
+            font-size: var(--font-size-l);
+        }
+
+        .footer-section .social-link-list .social-link:hover,
+        .footer-section .policy-text .policy-link:hover {
+            color: var(--secondary-color);
+        }
+
+        .footer-section .policy-text .separator {
+            color: #fff;
+            margin: 0 5px;
+        }
+
+        @media (max-width: 600px) {
+            .menu-nav {
+                padding: 15px 5%;
+            }
+
+            .menu-hero h1 {
+                font-size: 32px;
+            }
+
+            .matcha-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-section .section-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="menu-nav">
+        <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+        <div class="menu-logo">Welcome to MATCHA</div>
+        <div class="menu-cart">
+            <i class="fa-solid fa-shopping-bag"></i> Cart: <span id="count">0</span> (<span
+                id="total-price">$0.00</span>)
+        </div>
+    </nav>
+
+    <header class="menu-hero">
+        <h1>Ceremonial Matcha</h1>
+        <p>Experience the authentic taste of 100% organic Japanese green tea, finely stone-ground and whisked to velvet
+            perfection.</p>
+    </header>
+
+    <main class="matcha-container">
+        <div class="matcha-grid">
+
+            <div class="matcha-card">
+                <div class="image-container">
+                    <span class="badge">-15% OFF</span>
+                    <img src="https://www.youwish.nl/wp-content/uploads/2021/10/matcha.jpg"
+                        alt="Iced Matcha Latte" class="matcha-img">
+                </div>
+                <div class="card-details">
+                    <h3>Matcha Powder</h3>
+                    <p>Ceremonial grade green tea whisked smooth, layered over fresh chilled milk and served ice cold.
+                    </p>
+                    <div class="card-footer">
+                        <div class="price-wrapper">
+                            <span class="old-price">$4.50</span>
+                            <span class="matcha-price">$3.80</span>
+                        </div>
+                        <div class="action-btns">
+                            <button class="btn-remove" onclick="removeFromCart(3.80)"><i
+                                    class="fa-solid fa-minus"></i></button>
+                            <button class="btn-add" onclick="addToCart(3.80)"><i class="fa-solid fa-plus"></i>
+                                Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="matcha-card">
+                <div class="image-container">
+                    <span class="badge">-10% OFF</span>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgd8vj170t0oQw0h69VP2Bn012tQgexO8-YsP8bFAxqT9bfs3TXhKEcBc&s=10"
+                        alt="Strawberry Matcha" class="matcha-img">
+                </div>
+                <div class="card-details">
+                    <h3>Strawberry Matcha Latte</h3>
+                    <p>Fruity house-made strawberry puree base, pure milk, topped with a vibrant layer of ceremonial
+                        matcha.</p>
+                    <div class="card-footer">
+                        <div class="price-wrapper">
+                            <span class="old-price">$5.00</span>
+                            <span class="matcha-price">$4.00</span>
+                        </div>
+                        <div class="action-btns">
+                            <button class="btn-remove" onclick="removeFromCart(4.25)"><i
+                                    class="fa-solid fa-minus"></i></button>
+                            <button class="btn-add" onclick="addToCart(4.25)"><i class="fa-solid fa-plus"></i>
+                                Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="matcha-card">
+                <div class="image-container">
+                    <span class="badge">-5% OFF</span>
+                    <img src="https://myeverydaytable.com/wp-content/uploads/IcedMatcha-7.jpg" alt="Matcha Cold Foam"
+                        class="matcha-img">
+                </div>
+                <div class="card-details">
+                    <h3>Iced Matcha Latte Recipe</h3>
+                    <p>This iced matcha latte is creamy, refreshing, and delicious. Learn how to make a foolproof
+                        version .</p>
+                    <div class="card-footer">
+                        <div class="price-wrapper">
+                            <span class="old-price">$3.80</span>
+                            <span class="matcha-price">$3.10</span>
+                        </div>
+                        <div class="action-btns">
+                            <button class="btn-remove" onclick="removeFromCart(4.00)"><i
+                                    class="fa-solid fa-minus"></i></button>
+                            <button class="btn-add" onclick="addToCart(4.00)"><i class="fa-solid fa-plus"></i>
+                                Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="matcha-card">
+                <div class="image-container">
+                    <span class="badge">-10% OFF</span>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaEg79T7vGSiCCDl4BdhkdYiKXAcqKwlZacEo5eOhLwQ&s=10"
+                        alt="Matcha Cold Foam" class="matcha-img">
+                </div>
+                <div class="card-details">
+                    <h3>Dirty Matcha Coffee Latte </h3>
+                    <p>This iced matcha latte is creamy with coffee, refreshing, and delicious. Learn how to make a
+                        foolproof version .</p>
+                    <div class="card-footer">
+                        <div class="price-wrapper">
+                            <span class="old-price">$3.80</span>
+                            <span class="matcha-price">$4.00</span>
+                        </div>
+                        <div class="action-btns">
+                            <button class="btn-remove" onclick="removeFromCart(4.00)"><i
+                                    class="fa-solid fa-minus"></i></button>
+                            <button class="btn-add" onclick="addToCart(4.00)"><i class="fa-solid fa-plus"></i>
+                                Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="matcha-card">
+                <div class="image-container">
+                    <span class="badge">-20% OFF</span>
+                    <img src="https://thumbs.dreamstime.com/b/isolate-iced-green-tea-latte-matcha-white-background-cru-crushed-extract-powder-wooden-cup-leaves-114961193.jpg"
+                        alt="Matcha Cold Foam" class="matcha-img">
+                </div>
+                <div class="card-details">
+                    <h3>Cup Matcha Tea</h3>
+                    <p>This iced matcha latte is creamy, refreshing, and delicious. Learn how to make a foolproof
+                        version .</p>
+                    <div class="card-footer">
+                        <div class="price-wrapper">
+                            <span class="old-price">$6.00</span>
+                            <span class="matcha-price">$5.00</span>
+                        </div>
+                        <div class="action-btns">
+                            <button class="btn-remove" onclick="removeFromCart(4.00)"><i
+                                    class="fa-solid fa-minus"></i></button>
+                            <button class="btn-add" onclick="addToCart(4.00)"><i class="fa-solid fa-plus"></i>
+                                Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="matcha-card">
+                <div class="image-container">
+                    <span class="badge">-15% OFF</span>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjQ-FERXgmZMVU7mRjcxk2LZOCj5FxW9rJeTMmtkASkw&s=10"
+                        alt="Matcha Cold Foam" class="matcha-img">
+                </div>
+                <div class="card-details">
+                    <h3>Iced Matcha Latte with Milk and Ice, Isolated </h3>
+                    <p>Iced matcha latte sweetened with a brown sugar simple syrup. Simple and refreshing, this brown
+                        sugar.</p>
+                    <div class="card-footer">
+                        <div class="price-wrapper">
+                            <span class="old-price">$4.80</span>
+                            <span class="matcha-price">$4.50</span>
+                        </div>
+                        <div class="action-btns">
+                            <button class="btn-remove" onclick="removeFromCart(4.00)"><i
+                                    class="fa-solid fa-minus"></i></button>
+                            <button class="btn-add" onclick="addToCart(4.00)"><i class="fa-solid fa-plus"></i>
+                                Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="matcha-card">
+                <div class="image-container">
+                    <span class="badge">-15% OFF</span>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNnym-3v1sPFlNIe8bmJDA3KDxM9HUD3jDeYqP2nsyZw&s=10"
+                        alt="Matcha Cold Foam" class="matcha-img">
+                </div>
+                <div class="card-details">
+                    <h3>Matcha Latte Art</h3>
+                    <p>Iced matcha latte sweetened with a brown sugar simple syrup. Simple and refreshing, this brown
+                        sugar.</p>
+                    <div class="card-footer">
+                        <div class="price-wrapper">
+                            <span class="old-price">$4.80</span>
+                            <span class="matcha-price">$4.50</span>
+                        </div>
+                        <div class="action-btns">
+                            <button class="btn-remove" onclick="removeFromCart(4.00)"><i
+                                    class="fa-solid fa-minus"></i></button>
+                            <button class="btn-add" onclick="addToCart(4.00)"><i class="fa-solid fa-plus"></i>
+                                Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="matcha-card">
+                <div class="image-container">
+                    <span class="badge">-15% OFF</span>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1mHmdJr69KodRFur1koIKROT550DSYLzmR5mP_G8Hx2S1ka3fjo_1kj8&s=10"
+                        alt="Matcha Cold Foam" class="matcha-img">
+                </div>
+                <div class="card-details">
+                    <h3>Green tea leaf</h3>
+                    <p>Iced matcha latte sweetened with a brown sugar simple syrup. Simple and refreshing, this brown
+                        sugar.</p>
+                    <div class="card-footer">
+                        <div class="price-wrapper">
+                            <span class="old-price">$4.00</span>
+                            <span class="matcha-price">$3.90</span>
+                        </div>
+                        <div class="action-btns">
+                            <button class="btn-remove" onclick="removeFromCart(3.90)"><i
+                                    class="fa-solid fa-minus"></i></button>
+                            <button class="btn-add" onclick="addToCart(3.90)"><i class="fa-solid fa-plus"></i>
+                                Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="matcha-card">
+                <div class="image-container">
+                    <span class="badge">-5% OFF</span>
+                    <img src="https://cdn.shopify.com/s/files/1/0557/4269/3571/files/Matcha_green_powder_in_wooden_bowl_with_spoon_and_green_leaves_isolated_on_white_background._1024x1024.jpg?v=1731978269"
+                        alt="Matcha Cold Foam" class="matcha-img">
+                </div>
+                <div class="card-details">
+                    <h3>Matcha Powder</h3>
+                    <p>Iced matcha latte sweetened with a brown sugar simple syrup. Simple and refreshing, this brown
+                        sugar.</p>
+                    <div class="card-footer">
+                        <div class="price-wrapper">
+                            <span class="old-price">$4.80</span>
+                            <span class="matcha-price">$4.75</span>
+                        </div>
+                        <div class="action-btns">
+                            <button class="btn-remove" onclick="removeFromCart(4.75)"><i
+                                    class="fa-solid fa-minus"></i></button>
+                            <button class="btn-add" onclick="addToCart(4.75)"><i class="fa-solid fa-plus"></i>
+                                Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="matcha-card">
+                <div class="image-container">
+                    <span class="badge">-15% OFF</span>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuX6V6Kv4intqWuflth2uwIK14Tn5_H22NZsgmOwJmsA&s=10"
+                        alt="Matcha Cold Foam" class="matcha-img">
+                </div>
+                <div class="card-details">
+                    <h3>Ice Matcha Latte Green Tea</h3>
+                    <p>Iced matcha latte sweetened with a brown sugar simple syrup. Simple and refreshing, this brown
+                        sugar.</p>
+                    <div class="card-footer">
+                        <div class="price-wrapper">
+                            <span class="old-price">$4.80</span>
+                            <span class="matcha-price">$4.50</span>
+                        </div>
+                        <div class="action-btns">
+                            <button class="btn-remove" onclick="removeFromCart(4.50)"><i
+                                    class="fa-solid fa-minus"></i></button>
+                            <button class="btn-add" onclick="addToCart(4.50)"><i class="fa-solid fa-plus"></i>
+                                Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="matcha-card">
+                <div class="image-container">
+                    <span class="badge">-15% OFF</span>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTW9SzOUQd4miZhrhndWLhyXB0OUDMCbAe71A&s"
+                        alt="Matcha Cold Foam" class="matcha-img">
+                </div>
+                <div class="card-details">
+                    <h3>Matcha Powder</h3>
+                    <p>Iced matcha latte sweetened with a brown sugar simple syrup. Simple and refreshing, this brown
+                        sugar.</p>
+                    <div class="card-footer">
+                        <div class="price-wrapper">
+                            <span class="old-price">$4.90</span>
+                            <span class="matcha-price">$4.85</span>
+                        </div>
+                        <div class="action-btns">
+                            <button class="btn-remove" onclick="removeFromCart(4.85)"><i
+                                    class="fa-solid fa-minus"></i></button>
+                            <button class="btn-add" onclick="addToCart(4.85)"><i class="fa-solid fa-plus"></i>
+                                Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="matcha-card">
+                <div class="image-container">
+                    <span class="badge">-10% OFF</span>
+                    <img src="https://matchamatcha.ca/cdn/shop/files/Matcha_Matcha_Powder.jpg?v=1757969346&width=3840"
+                        alt="Matcha Cold Foam" class="matcha-img">
+                </div>
+                <div class="card-details">
+                    <h3>Matcha Powder</h3>
+                    <p>Iced matcha latte sweetened with a brown sugar simple syrup. Simple and refreshing, this brown
+                        sugar.</p>
+                    <div class="card-footer">
+                        <div class="price-wrapper">
+                            <span class="old-price">$4.80</span>
+                            <span class="matcha-price">$4.60</span>
+                        </div>
+                        <div class="action-btns">
+                            <button class="btn-remove" onclick="removeFromCart(4.60)"><i
+                                    class="fa-solid fa-minus"></i></button>
+                            <button class="btn-add" onclick="addToCart(4.60)"><i class="fa-solid fa-plus"></i>
+                                Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Premium Process -->
+
+    <section class="story-section">
+        <div class="story-container">
+            <div class="story-header">
+                <h2>Our Premium Process</h2>
+                <p>From the shaded tea fields of Uji, Kyoto to your cup. Discover how we maintain the premium quality of
+                    our traditional matcha.</p>
+            </div>
+
+            <div class="process-grid">
+                <!-- Step 1 -->
+                <div class="process-step">
+                    <div class="process-icon">
+                        <i class="fa-solid fa-cloud-sun"></i>
+                    </div>
+                    <h4>1. 100% Shaded Grown</h4>
+                    <p>The tea leaves are shaded from sunlight for 3-4 weeks before harvest to boost chlorophyll and
+                        amino acids.</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="process-step">
+                    <div class="process-icon">
+                        <i class="fa-solid fa-hand"></i>
+                    </div>
+                    <h4>2. Hand-Picked</h4>
+                    <p>Only the youngest, most vibrant green top leaves are carefully selected by hand during the spring
+                        harvest.</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="process-step">
+                    <div class="process-icon">
+                        <i class="fa-solid fa-mortar-pestle"></i>
+                    </div>
+                    <h4>3. Stone-Ground</h4>
+                    <p>Leaves are slowly ground using traditional granite stone mills to preserve flavor, color, and
+                        rich nutrients.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SHIPPING METHODS SECTION -->
+    <section class="shipping-section">
+        <div class="shipping-container">
+            <div class="shipping-header">
+                <h2>Shipping Methods</h2>
+                <p>Choose the fastest and most convenient delivery service to get your daily caffeine fix.</p>
+            </div>
+
+            <div class="shipping-grid">
+                <!-- Method 1 -->
+                <div class="shipping-card">
+                    <div class="shipping-icon">
+                        <i class="fa-solid fa-motorcycle"></i>
+                    </div>
+                    <h4>Express Delivery</h4>
+                    <p>Instant local delivery for freshly brewed hot or iced coffee, safely packaged to lock in the
+                        perfect premium flavor.</p>
+                    <span class="shipping-time"><i class="fa-regular fa-clock"></i> 20 - 45 Mins</span>
+                </div>
+
+                <!-- Method 2 -->
+                <div class="shipping-card">
+                    <div class="shipping-icon">
+                        <i class="fa-solid fa-truck-fast"></i>
+                    </div>
+                    <h4>Nationwide Shipping</h4>
+                    <p>Reliable shipping for custom coffee beans and bottled brews delivered safely to your doorstep
+                        across provinces.</p>
+                    <span class="shipping-time"><i class="fa-regular fa-clock"></i> 1 - 2 Days</span>
+                </div>
+
+                <!-- Method 3 -->
+                <div class="shipping-card">
+                    <div class="shipping-icon">
+                        <i class="fa-solid fa-store"></i>
+                    </div>
+                    <h4>Store Pick-up</h4>
+                    <p>Pre-order your drinks through our platform and skip the line by picking it up directly from your
+                        nearest store branch.</p>
+                    <span class="shipping-time"><i class="fa-regular fa-clock"></i> Ready in 10 Mins</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer-section">
+        <div class="section-content">
+            <p class="copyright-text"> 🍵 Matcha Time 2026 </p>
+            <div class="social-link-list">
+                <a href="#" class="social-link"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#" class="social-link"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="social-link"><i class="fa-brands fa-x-twitter"></i></a>
+            </div>
+            <p class="policy-text">
+                <a href="#" class="policy-link">Privacy policy</a>
+                <span class="separator">•</span>
+                <a href="#" class="policy-link">Refund policy</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+
+
+    <script src="script.js"></script>
+</body>
+
+</html>
